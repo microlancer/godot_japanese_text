@@ -10,6 +10,8 @@ const NO_HIDE = -1
 @export var text: String = ""
 @export var furigana_text_size: int = 32
 @export var regular_text_size: int = 64
+@export var horizontally_centered: bool = false
+@export var vertically_centered: bool = false
 
 var hide_kanji_word_index: int = NO_HIDE
 var hide_furigana_word_index: int = NO_HIDE
@@ -18,8 +20,18 @@ var _kanji_words: Array[Dictionary] = []
 
 var word_scene: Resource = preload("res://addons/godot_japanese_text/word.tscn")
 
+@onready var flow_container: FlowContainer = $CenterContainer/FlowContainer
+
 func _ready() -> void:
 	render_text()
+	flow_container.custom_minimum_size.x = $CenterContainer.size.x
+	print($CenterContainer.size)
+
+	if not vertically_centered:
+		$CenterContainer/FlowContainer.reparent(self)
+
+	if not horizontally_centered:
+		flow_container.alignment = FlowContainer.ALIGNMENT_BEGIN
 
 func render_text() -> void:
 
@@ -28,8 +40,8 @@ func render_text() -> void:
 
 	# Clear existing words
 
-	for i in $FlowContainer.get_children():
-		$FlowContainer.remove_child(i)
+	for i in flow_container.get_children():
+		flow_container.remove_child(i)
 
 	# Split text into words, while collecting furigana. A word is a single
 	# character, or group of Kanji unless the Kanji is broken up by a brace.
@@ -107,7 +119,7 @@ func render_text() -> void:
 			new_word.color_override = i.color
 		if "furigana_color" in i:
 			new_word.furigana_color_override = i.furigana_color
-		$FlowContainer.add_child(new_word)
+		flow_container.add_child(new_word)
 
 	rendered.emit()
 
