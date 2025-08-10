@@ -1,0 +1,119 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvxd2f8dbnvbs"]
+
+[ext_resource type="Script" uid="uid://d1tosbudlde2b" path="res://japanese_text.gd" id="1_8b7yn"]
+[ext_resource type="PackedScene" uid="uid://c7k0cywsbdc7k" path="res://word.tscn" id="2_xcock"]
+
+[node name="JapaneseText" type="Control"]
+custom_minimum_size = Vector2(1080, 1920)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8b7yn")
+text = "駅{えき}の前{まえ}で待{ま}っています"
+
+[node name="FlowContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = -1
+theme_override_constants/v_separation = 20
+
+[node name="Word" parent="FlowContainer" instance=ExtResource("2_xcock")]
+visible = false
+layout_mode = 2
+
+[node name="Word2" type="VBoxContainer" parent="FlowContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = -16
+
+[node name="Furigana" type="RichTextLabel" parent="FlowContainer/Word2"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 18)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 18
+text = "あたかひろ"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FlowContainer/Word2"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="ActualChar" type="RichTextLabel" parent="FlowContainer/Word2/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_constants/line_separation = 33
+text = "あ"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActualChar2" type="RichTextLabel" parent="FlowContainer/Word2/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "あ"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Word3" type="VBoxContainer" parent="FlowContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = -16
+
+[node name="Furigana" type="RichTextLabel" parent="FlowContainer/Word3"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 18)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 18
+text = "あたかひろ"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FlowContainer/Word3"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="ActualChar" type="RichTextLabel" parent="FlowContainer/Word3/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_constants/line_separation = 33
+text = "あ"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActualChar2" type="RichTextLabel" parent="FlowContainer/Word3/HBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "あ"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="KanjiText" type="Node2D" parent="."]
+visible = false
+
+[node name="ActualChar" type="RichTextLabel" parent="KanjiText"]
+visible = false
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+offset_top = 96.0
+offset_right = 576.0
+offset_bottom = 160.0
+theme_override_constants/line_separation = 33
+text = "ああああああああああああああ\\"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

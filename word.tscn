@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7k0cywsbdc7k"]
+
+[ext_resource type="Script" uid="uid://bi0et3ytj1trx" path="res://word.gd" id="1_3q3ku"]
+
+[node name="Word" type="VBoxContainer"]
+offset_right = 72.0
+offset_bottom = 11.0
+theme_override_constants/separation = -16
+script = ExtResource("1_3q3ku")
+chars = "駅前"
+furigana = "えきまえ"
+
+[node name="Furigana" type="RichTextLabel" parent="."]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 18
+text = "えきまえ"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = -1
+alignment = 1
+
+[node name="ActualChar" type="RichTextLabel" parent="HBoxContainer"]
+visible = false
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_constants/line_separation = 33
+text = "駅"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActualChar2" type="RichTextLabel" parent="HBoxContainer"]
+visible = false
+clip_contents = false
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "前"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2
