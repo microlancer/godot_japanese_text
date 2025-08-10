@@ -12,13 +12,6 @@ func _ready() -> void:
 	if text == "":
 		return
 
-	# Each character is a word, unless there is furigana.
-
-	#var new_word: Dictionary = {
-		#"furigana": "",
-		#"word": ""
-	#}
-
 	# Split text into words, while collecting furigana. A word is a single
 	# character, or group of Kanji unless the Kanji is broken up by a brace.
 
