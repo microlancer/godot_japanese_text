@@ -4,8 +4,8 @@
 
 ## How to use
 
-Add the JapaneseText node and set the text and font sizes in the inspector.
-To add furigana, enter it within braces after kanji, for example: `駅{えき}の前{まえ}で待{ま}っています`.
+Add the `JapaneseText` node and dependencies to your project. Set the text and font sizes in the inspector or programmatically via node export vars.
+To add furigana, enter it within braces after kanji in your text. For example: `駅{えき}の前{まえ}で待{ま}っています`.
 
 ## Features
 
