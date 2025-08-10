@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cvxd2f8dbnvbs"]
 
-[ext_resource type="Script" uid="uid://d1tosbudlde2b" path="res://japanese_text.gd" id="1_8b7yn"]
+[ext_resource type="Script" uid="uid://d1tosbudlde2b" path="res://addons/godot_japanese_text/japanese_text.gd" id="1_8b7yn"]
 
 [node name="JapaneseText" type="Control"]
 custom_minimum_size = Vector2(1080, 1920)
