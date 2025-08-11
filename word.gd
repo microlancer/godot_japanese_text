@@ -22,8 +22,10 @@ func _ready() -> void:
 		new_label.clip_contents = false
 		new_label.custom_minimum_size = Vector2(64, 64)
 		new_label.text = i
-		new_label.add_theme_font_size_override("normal_font_size", regular_text_size)
+		print("label size: " + str(regular_text_size))
+		new_label.add_theme_font_size_override("font_size", regular_text_size)
 		new_label.custom_minimum_size.x = regular_text_size
+
 		#new_label.bbcode_enabled = true
 		if color_override is Color:
 			print("overriding color in word")
@@ -34,6 +36,7 @@ func _ready() -> void:
 
 	furigana_label.text = furigana
 	furigana_label.custom_minimum_size.y = furigana_text_size
+	print("furigana size: " + str(furigana_text_size))
 	furigana_label.add_theme_font_size_override("normal_font_size", furigana_text_size)
 	if furigana_color_override is Color:
 		print("furigana color override")

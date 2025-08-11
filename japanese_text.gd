@@ -27,6 +27,8 @@ func _ready() -> void:
 	flow_container.custom_minimum_size.x = $CenterContainer.size.x
 	print($CenterContainer.size)
 
+	flow_container.add_theme_font_size_override("default_font_size", regular_text_size)
+
 	if not vertically_centered:
 		$CenterContainer/FlowContainer.reparent(self)
 
@@ -113,6 +115,7 @@ func render_text() -> void:
 		new_word.chars = i.word
 		new_word.furigana = i.furigana
 		new_word.furigana_text_size = furigana_text_size
+		print("word size: " + str(regular_text_size))
 		new_word.regular_text_size = regular_text_size
 		if "color" in i:
 			print("overriding color")
@@ -142,13 +145,19 @@ func _end_of_kanji(words, kanji_word, _kanji_index) -> void:
 	words.append(new_kanji_word)
 	kanji_word = ""
 
-func is_kanji(c: String) -> bool:
+static func is_kanji(c: String) -> bool:
 	if c.length() == 0:
 		return false
 	var codepoint = c.unicode_at(0)
 	return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) or \
 		   (codepoint >= 0x3400 and codepoint <= 0x4DBF) or \
 		   (codepoint >= 0x20000 and codepoint <= 0x2A6DF)
+
+static func has_kanji(s: String) -> bool:
+	for c in s:
+		if is_kanji(c):
+			return true
+	return false
 
 func get_kanji_words() -> Array[Dictionary]:
 	return _kanji_words
