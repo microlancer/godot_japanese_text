@@ -2,28 +2,32 @@ class_name JapaneseText
 extends Control
 
 signal rendered
+signal text_changed
 
 const JP_SPACE: String = "　" # full-width space character
 const JP_UNDERSCORE: String = "＿" # full-width underscore character
 const NO_HIDE = -1
 
-@export var text: String = ""
+@export var text: String = "" # initial value only, use set_text() for updates
 @export var furigana_text_size: int = 32
 @export var regular_text_size: int = 64
-@export var horizontally_centered: bool = false
-@export var vertically_centered: bool = false
+@export var horizontally_centered: bool = false # initial only
+@export var vertically_centered: bool = false # initial only
 
 var hide_kanji_word_index: int = NO_HIDE
 var hide_furigana_word_index: int = NO_HIDE
 
 var _kanji_words: Array[Dictionary] = []
+var _text: String = ""
 
 var word_scene: Resource = preload("res://addons/godot_japanese_text/word.tscn")
 
 @onready var flow_container: FlowContainer = $CenterContainer/FlowContainer
 
 func _ready() -> void:
+	#set_text("Hello")
 	render_text()
+
 	flow_container.custom_minimum_size.x = $CenterContainer.size.x
 	print($CenterContainer.size)
 
@@ -34,6 +38,13 @@ func _ready() -> void:
 
 	if not horizontally_centered:
 		flow_container.alignment = FlowContainer.ALIGNMENT_BEGIN
+
+	self_modulate.a = 0
+
+func set_text(new_text: String) -> void:
+	print("set_text called")
+	text = new_text
+	render_text()
 
 func render_text() -> void:
 
@@ -52,56 +63,74 @@ func render_text() -> void:
 
 	var _is_furigana = false
 	var _is_kanji_word = false
-	var furigana = ""
+	var _is_special_word = false
+	var furigana_word: String = ""
 	var kanji_word: String = ""
+	var special_word: String = ""
 	var _kanji_index = 0
 	print("Setting _kanji_words to empty")
 	_kanji_words = []
 
 	for i in text:
 		if i == "{":
+			print("Start of furigana word")
 			_is_furigana = true
-			if _is_kanji_word:
-				_is_kanji_word = false
-				_end_of_kanji(words, kanji_word, _kanji_index)
-				kanji_word = ""
 			continue
 		elif i == "}":
 			print("End of furigana word")
 			_is_furigana = false
-			words[words.size()-1].furigana = furigana
+			words[words.size()-1].furigana = furigana_word
 			print(words)
-			furigana = ""
+			furigana_word = ""
 			continue
-		elif _is_furigana:
-			print("Added furigana char: " + i)
-			furigana += i
-			continue
-
-		if is_kanji(i):
+		elif i == "[":
+			print("Start of kanji word")
 			_is_kanji_word = true
-			print("Added kanji char: " + i)
-			kanji_word += i
 			continue
-		elif _is_kanji_word:
+		elif i == "]":
+			print("End of word")
 			_is_kanji_word = false
 			_end_of_kanji(words, kanji_word, _kanji_index)
 			kanji_word = ""
+			continue
+		elif _is_kanji_word:
+			print("Added kanji char: " + i)
+			kanji_word += i
+			continue
+		elif _is_furigana:
+			print("Added furigana char: " + i)
+			furigana_word += i
+			continue
 		else:
-			print("Append char as word: " + i)
-			words.append({"furigana": "", "word": i})
+			# Just a normal character
+			words.append({"furigana": JP_SPACE, "word": i})
+
+		#if is_kanji(i):
+			#_is_kanji_word = true
+			#print("Added kanji char: " + i)
+			#kanji_word += i
+			#continue
+		#elif _is_kanji_word:
+			#_is_kanji_word = false
+			#_end_of_kanji(words, kanji_word, _kanji_index)
+			#kanji_word = ""
+			#print("Append char as word: " + i)
+			#words.append({"furigana": "", "word": i})
+		#else:
+			#print("Append char as word: " + i)
+			#words.append({"furigana": "", "word": i})
 
 	# At the end of the loop, if we haven't ended the kanji, end it automatically.
-	if _is_kanji_word:
-		_end_of_kanji(words, kanji_word, _kanji_index)
+	#if _is_kanji_word:
+		#_end_of_kanji(words, kanji_word, _kanji_index)
 
 	print({"allwords": words})
 
-	if hide_furigana_word_index >= 0:
+	if not _kanji_words.is_empty() and hide_furigana_word_index != NO_HIDE:
 		_kanji_words[hide_furigana_word_index].furigana = "???"
 		_kanji_words[hide_furigana_word_index].furigana_color = Color.YELLOW
 
-	if hide_kanji_word_index >= 0:
+	if not _kanji_words.is_empty() and hide_kanji_word_index != NO_HIDE:
 		var length = _kanji_words[hide_kanji_word_index].word.length()
 		_kanji_words[hide_kanji_word_index].word = JP_UNDERSCORE.repeat(length)
 		_kanji_words[hide_kanji_word_index].color = Color.YELLOW
@@ -137,7 +166,7 @@ func _end_of_kanji(words, kanji_word, _kanji_index) -> void:
 	print({"kw":_kanji_words})
 	print("Hide index: " + str(hide_kanji_word_index))
 	print("Curr index: " + str(_kanji_words.size() - 1))
-	if _kanji_words.size() - 1 == hide_kanji_word_index:
+	if hide_kanji_word_index != NO_HIDE and _kanji_words.size() - 1 == hide_kanji_word_index:
 		print("Hiding: " + str(hide_kanji_word_index))
 		#kanji_word = "[color=red]" + JP_UNDERSCORE.repeat(kanji_word.length()) + "[/color]"
 		kanji_word = JP_UNDERSCORE.repeat(kanji_word.length())

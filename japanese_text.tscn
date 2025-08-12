@@ -13,7 +13,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_8b7yn")
-text = "駅{えき}の前{まえ}で待{ま}っています"
+text = "[駅]{えき}の[前]{まえ}で[待っています]{まっています}"
 horizontally_centered = true
 vertically_centered = true
 
